@@ -56,7 +56,7 @@ module.exports.createUser = (event, context, callback) => {
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
-    port: 5432
+    port: process.env.PGPORT
   });
 
   inputValidators(body) //validate user input

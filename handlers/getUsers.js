@@ -45,21 +45,24 @@ const inputValidators = (body) => {
 
 
 const queryConstructor = (body) => {
-  let query = 'select * from users';
+  let query = 'select * from users'; //base query
   const values = [];
 
   if (body.name || body.email || body.mobileNumber) {
-    query = `${query} where`;
+    query = `${query} where`; //select * from users where
 
     if (body.name) {
       values.push(`%${body.name}%`);
       const valueLength = values.length;
-      query = `${query} name like $${valueLength}`;   
+      query = `${query} name like $${valueLength}`; // select * from users where name like "%name%"
     }
 
     if (body.email) {
       values.push(`%${body.email}%`);
       const valueLength = values.length;
+      // select * from users where name like "%name%" AND email like "%email%"
+      // if the only parameter then
+      //select * from users where email like "%email%"
       query = valueLength > 1 ? `${query} AND email like $${valueLength}` : `${query} email like $${valueLength}`;
     }
 
@@ -88,7 +91,7 @@ module.exports.listUsers = (event, context, callback) => {
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
-    port: 5432
+    port: process.env.PGPORT
   });
 
   inputValidators(body)
@@ -98,7 +101,6 @@ module.exports.listUsers = (event, context, callback) => {
     .then(() => {
       
       const query = queryConstructor(body);
-      console.log(query);
       return client.query(query.query, query.values);
     })
     .then((res) => {
@@ -109,7 +111,7 @@ module.exports.listUsers = (event, context, callback) => {
 
       const response = {
         statusCode: 201,
-        body: JSON.stringify({
+        body: JSON.stringify({ // body always should be JSON.stringified
           users: this.users
         })
       };

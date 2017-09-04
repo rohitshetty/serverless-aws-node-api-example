@@ -1,0 +1,18 @@
+{
+  "name": "poc-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint handlers/*"
+  },
+  "author": "rohitshetty",
+  "license": "ISC",
+  "dependencies": {
+    "joi": "^10.6.0",
+    "pg": "^7.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.6.1"
+  }
+}

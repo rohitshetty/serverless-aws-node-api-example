@@ -1,0 +1,36 @@
+# Welcome to Serverless!
+
+
+service: poc-service
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: ap-south-1
+
+
+# you can define service wide environment variables here
+  environment:
+    PGUSER: ${file(env.json):user}
+    PGHOST: ${file(env.json):host}
+    PGPASSWORD: {file(env.json):password}
+    PGDATABASE: {file(env.json):db}
+    PGPORT: {file(env.json):port}
+
+
+functions:
+  createUser:
+    # handlers folder has all the createUser file has createUser function which is the handler
+    handler: handlers/createUser.createUser
+    events:
+      - http:
+            path: users
+            method: post
+
+  listUsers:
+    # handlers folder has all the createUser file has createUser function which is the handler
+    handler: handlers/getUsers.listUsers
+    events:
+      - http:
+            path: users
+            method: get
